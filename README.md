@@ -23,6 +23,14 @@ Preview: **http://127.0.0.1:4174**. Production: `npm run build`; check asset int
 - Fourteen researched assets expand the Iron Man and Doom experiences, including two additional suits. Every character collage uses seven unique images and every photo fan uses five. Sources and credits: `docs/expanded-asset-sources.json`. Assets are served locally as WebP.
 - Small-screen layouts, reduced-motion alternatives, image fallback for unavailable WebGL, hidden-tab/offscreen rendering suspension and rendering that settles when the pointer stops.
 
+## The snap
+
+The hero’s articulated gold Infinity Gauntlet starts a four-second, user-initiated cinematic. Tony becomes Iron Man, then the supplied `public/snap.png` Endgame artwork fills the screen, followed by Doom fully revealed at soundtrack time **4.00 s**. `public/images/endgame-snap.webp` is an optimized copy; the supplied original is untouched. The local soundtrack is copied from `MF Doom All Caps.mp3` into `public/audio/all-caps.mp3`.
+
+The paused GSAP timeline is driven by the audio element’s playback position. Buffering and explicit pause hold the picture with the sound. The gauntlet, image pushes and diagonal reveals respect reduced motion. Doom’s page identity is committed beneath the last reveal, followed by a short return to the interactive hero. The music continues with pause, mute and stop controls. Replay restarts the same audio element at zero; Escape cancels and restores the previous identity. Music continues across window/tab switches; returning to the page immediately resynchronizes the cinematic to the current soundtrack position. Images needed for the sequence and Doom landing decode before enabling the trigger; the soundtrack loads metadata initially and warms on pointer/keyboard intent.
+
+The gauntlet is an original segmented SVG in `src/gauntlet.js`, allowing independent finger/thumb articulation without an external model or raster dependency. The supplied media are used for this local fan experiment; no redistribution license is inferred and no deployment is performed by this change.
+
 ## Reference study and differences
 
 The supplied recording was sampled at 17 timestamps across its 38.7 seconds, with closer inspection of the hero reveal, shrinking portrait, manifesto, collage, portrait framing, archive and footer. Public HTML, CSS and the frontend animation bundle were downloaded into `docs/reference/` for analysis. The downloaded bundles are **not executed by this app or shipped in the production build**. The small standard GLSL simplex helper retained in `src/simplex.js` is attributed to the reference; the local renderer uses it for the contour background.

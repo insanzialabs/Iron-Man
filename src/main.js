@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { Portrait } from "./portrait.js";
+import { createSnapExperience } from "./snap.js";
 import { personas, createPersonaExperience } from "./personas.js";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -22,11 +23,11 @@ lenis.stop();
 const portrait = new Portrait($("#portrait"), { reduced });
 let persona = 0;
 let changeExperience;
-function selectPersona(index, announce = true) {
+function selectPersona(index, announce = true, options = {}) {
   if (index < 0 || index >= personas.length) return;
   const changed = persona !== index;
   persona = index;
-  portrait.setPersona(index);
+  portrait.setPersona(index, options.immediate);
   $$("[data-persona]").forEach((button) =>
     button.setAttribute(
       "aria-pressed",
@@ -41,7 +42,7 @@ function selectPersona(index, announce = true) {
     "aria-label",
     `${profile.name}. Move to reveal ${profile.next}. Use the character buttons to change the experience.`,
   );
-  if (changed) changeExperience?.(index);
+  if (changed) changeExperience?.(index, options);
 }
 $$("[data-persona]").forEach((button) =>
   button.addEventListener("click", () =>
@@ -411,7 +412,7 @@ function motion() {
         0,
       )
       .to(
-        ".persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle",
+        ".persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle,.snap-trigger",
         { opacity: 0, y: 15, duration: 0.2, ease: "none" },
         0,
       )
@@ -575,7 +576,7 @@ function motion() {
       const scrollSuspended = self.progress > 0.12;
       if (portrait.suspensions.has("scroll") !== scrollSuspended)
         portrait.setSuspended("scroll", scrollSuspended);
-      $$(".persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle").forEach(
+      $$(".persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle,.snap-trigger").forEach(
         (el) => {
           el.inert = self.progress > 0.12;
           el.style.pointerEvents = self.progress > 0.12 ? "none" : "";
@@ -642,7 +643,7 @@ async function start() {
       reduced ? 0 : "<.15",
     )
     .from(
-      ".header,.persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle",
+      ".header,.persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle,.snap-trigger",
       {
         opacity: 0,
         y: 12,
@@ -653,4 +654,5 @@ async function start() {
       reduced ? 0 : "<.4",
     );
 }
+createSnapExperience({ portrait, lenis, reduced, selectPersona, getPersona: () => persona });
 start();

@@ -8,7 +8,10 @@ const html = await readFile(path.join(root, "index.html"), "utf8");
 const css = await readFile(path.join(root, "src/style.css"), "utf8");
 const js = await readFile(path.join(root, "src/main.js"), "utf8");
 const portrait = await readFile(path.join(root, "src/portrait.js"), "utf8");
-const source = [html, css, js, portrait].join("\n");
+const snap = await readFile(path.join(root, "src/snap.js"), "utf8");
+const source = [html, css, js, portrait, snap].join("\n");
+const soundtrack = await readFile(path.join(root, "public/audio/all-caps.mp3"));
+assert(soundtrack.length > 100000, "Soundtrack is missing or truncated");
 assert.equal(personas.length, 3, "All three character experiences must exist");
 for (const persona of personas) {
   assert.equal(
