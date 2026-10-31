@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#23291d" />
+    <meta
+      name="description"
+      content="The man. The machine. The shadow. An interactive exploration of Tony Stark, Iron Man and Doctor Doom — an Insanzia Labs experiment."
+    />
+    <meta
+      property="og:title"
+      content="STARK — The man. The machine. The shadow."
+    />
+    <meta
+      property="og:description"
+      content="Genius is only the beginning. Explore an interactive Stark universe."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/tony.webp" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/fonts/mona.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/brier.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preload" href="/images/tony.webp" as="image" />
+    <title>STARK — The man. The machine. The shadow.</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#story">Skip to the story</a>
+    <div class="loader" aria-hidden="true">
+      <div class="loader-mark">ts</div>
+      <div class="loader-bottom">
+        <span>STARK INDUSTRIES</span><span class="load-count">00</span
+        ><span>INITIALIZING SYSTEMS</span>
+      </div>
+    </div>
+    <header class="header">
+      <a
+        class="wordmark"
+        href="#home"
+        aria-label="Stark Industries, back to top"
+        ><span>STARK</span><b>INDUSTRIES</b></a
+      >
+      <a class="monogram" href="#home" aria-label="Back to top">ts</a>
+      <div class="header-actions">
+        <a class="pill archive-link" href="#armory"
+          ><span class="tiny-cross">＋</span> THE ARMORY</a
+        ><button
+          class="menu-toggle"
+          aria-expanded="false"
+          aria-controls="navigation"
+          aria-label="Open menu"
+        >
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+    <nav class="menu" id="navigation" aria-label="Main navigation" inert>
+      <div class="menu-caption">
+        <span>STARK INDUSTRIES</span><span>ACCESS GRANTED / 001</span>
+      </div>
+      <div class="menu-links">
+        <a href="#home"><sup>01</sup> The <em>man.</em></a
+        ><a href="#story"><sup>02</sup> The <em>mind.</em></a
+        ><a href="#armory"><sup>03</sup> The <em>machine.</em></a
+        ><a href="#doom"><sup>04</sup> The <em>shadow.</em></a>
+      </div>
+      <div class="menu-bottom">
+        <span>GENIUS IS ONLY THE BEGINNING.</span
+        ><a
+          href="https://www.insanzialabs.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >AN INSANZIA LABS EXPERIMENT ↗</a
+        >
+      </div>
+    </nav>
+    <main>
+      <section class="hero-track" id="home" aria-labelledby="page-title">
+        <h1 class="sr-only" id="page-title">
+          Tony Stark. Iron Man. Doctor Doom. The man, the machine, the shadow.
+        </h1>
+        <div class="hero-sticky">
+          <div class="hero-marquee" aria-hidden="true">
+            <div>
+              <em>BUILT, NOT BORN.</em> MADE TO MAKE A DIFFERENCE.
+              <em>BUILT, NOT BORN.</em>
+            </div>
+            <div>THE MAN BEHIND THE MACHINE. THE MAN BEHIND THE MACHINE.</div>
+          </div>
+          <div
+            class="hero-portrait"
+            role="img"
+            aria-label="Interactive portrait of Tony Stark. Move your pointer to reveal Iron Man, or use the character controls."
+          >
+            <img
+              class="hero-fallback"
+              src="/images/tony.webp"
+              alt=""
+              width="1672"
+              height="941"
+              fetchpriority="high"
+            />
+            <canvas id="portrait" aria-hidden="true"></canvas>
+            <div class="hero-grain" aria-hidden="true"></div>
+          </div>
+          <div class="hero-signature" aria-hidden="true">Stark.</div>
+          <div class="hero-kicker">
+            <span>STARK INDUSTRIES</span
+            ><span>THE FUTURE IS A WORK IN PROGRESS.</span>
+          </div>
+          <div class="persona-panel" aria-label="Choose a character">
+            <span class="panel-label">SELECT IDENTITY</span>
+            <button data-persona="0" aria-pressed="true">
+              <span>01</span><b>THE MAN</b><small>TONY STARK</small>
+            </button>
+            <button data-persona="1" aria-pressed="false">
+              <span>02</span><b>THE MACHINE</b><small>IRON MAN</small>
+            </button>
+            <button data-persona="2" aria-pressed="false">
+              <span>03</span><b>THE SHADOW</b><small>DOCTOR DOOM</small>
+            </button>
+          </div>
+          <div class="hero-hint">
+            <span class="hint-dot"></span
+            ><span>MOVE TO REVEAL.<br />CLICK TO LOCK THE ARMOR.</span>
+          </div>
+          <a class="hero-scroll" href="#story" aria-label="Scroll to the story"
+            >SCROLL TO DISCOVER <span>↓</span></a
+          >
+        </div>
+      </section>
+      <section
+        class="manifesto section-dark"
+        id="story"
+        aria-labelledby="manifesto-title"
+      >
+        <div class="section-eyebrow">
+          <span>01 / MORE THAN THE ARMOR</span
+          ><span>EST. IN A CAVE. BUILT FOR THE WORLD.</span>
+        </div>
+        <h2 id="manifesto-title" class="manifesto-text">
+          A restless <em>mind.</em><br />A world worth<br /><span
+            class="wipe-word"
+            >fighting</span
+          >
+          for.<br />Always building.<br />Never standing <em>still.</em><br />A
+          man. A machine.<br />An <em class="wipe-word">extraordinary</em
+          ><br />legacy.
+        </h2>
+        <p class="manifesto-note">IT WAS NEVER JUST ABOUT THE SUIT.</p>
+      </section>
+      <section class="memory-track" aria-labelledby="memory-title">
+        <div class="memory-sticky">
+          <h2 class="sr-only" id="memory-title">
+            Fragments of a life in progress
+          </h2>
+          <div class="memory-label">
+            <span>PRIVATE ARCHIVE / 001—007</span
+            ><span>SCROLL TO EXPLORE →</span>
+          </div>
+          <div class="memory-strip">
+            <figure class="memory m1">
+              <img
+                src="/images/workshop.webp"
+                alt="Tony Stark beside an Iron Man suit in his workshop"
+                loading="lazy"
+              />
+              <figcaption>MALIBU, CALIFORNIA / THE WORKSHOP</figcaption>
+            </figure>
+            <figure class="memory m2">
+              <img
+                src="/images/tony.webp"
+                alt="Tony Stark portrait"
+                loading="lazy"
+              />
+              <figcaption>THE MIND BEHIND THE MACHINE</figcaption>
+            </figure>
+            <figure class="memory m3">
+              <img
+                src="/images/armor-mark-v.webp"
+                alt="Iron Man's red and silver portable Mark V armor"
+                loading="lazy"
+              />
+              <figcaption>ENGINEERED TO GO ANYWHERE</figcaption>
+            </figure>
+            <figure class="memory m4">
+              <img
+                src="/images/hall-of-armor.webp"
+                alt="Tony standing before the Hall of Armor"
+                loading="lazy"
+              />
+              <figcaption>EVERY ITERATION, A NEW POSSIBILITY</figcaption>
+            </figure>
+            <figure class="memory m5">
+              <img
+                src="/images/iron.webp"
+                alt="Iron Man in red and gold armor"
+                loading="lazy"
+              />
+              <figcaption>MORE THAN METAL</figcaption>
+            </figure>
+            <figure class="memory m6">
+              <img
+                src="/images/latveria.webp"
+                alt="Doctor Doom surveying Latveria from his castle"
+                loading="lazy"
+              />
+              <figcaption>MEANWHILE, IN LATVERIA…</figcaption>
+            </figure>
+            <figure class="memory m7">
+              <img
+                src="/images/doom.webp"
+                alt="Doctor Doom in his green cloak and silver mask"
+                loading="lazy"
+              />
+              <figcaption>EVERY LEGACY CASTS A SHADOW</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+      <div class="duality-track">
+        <section class="duality" aria-label="The man and the machine">
+          <a class="duality-card man" href="#story"
+            ><img src="/images/tony.webp" alt="" loading="lazy" />
+            <h2><em>THE</em><br />MAN.</h2>
+            <div>
+              <span>THE MIND. THE MAKER. THE HUMAN.</span
+              ><span class="circle-arrow">↗</span>
+            </div></a
+          >
+          <a class="duality-card machine" href="#armory"
+            ><img src="/images/iron.webp" alt="" loading="lazy" />
+            <h2><em>THE</em><br />SUIT.</h2>
+            <div>
+              <span>AN IDEA THAT CHANGED EVERYTHING.</span
+              ><span class="circle-arrow">↗</span>
+            </div></a
+          >
+        </section>
+        <div class="workshop-interlude">
+          <img
+            src="/images/hall-of-armor.webp"
+            alt="Tony Stark surveys the Hall of Armor in his workshop"
+            loading="lazy"
+          /><span>ONE MAN. ENDLESS POSSIBILITIES.</span>
+        </div>
+      </div>
+      <section
+        class="armory section-dark"
+        id="armory"
+        aria-labelledby="armory-title"
+      >
+        <div class="section-eyebrow">
+          <span>02 / THE HALL OF ARMOR</span
+          ><span>DESIGNED. BUILT. REBUILT.</span>
+        </div>
+        <div class="armory-heading">
+          <h2 id="armory-title">NEVER STOP<br /><em>iterating.</em></h2>
+          <p>
+            From a box of scraps to the bleeding edge.<br />Every suit has a
+            story. Find yours.
+          </p>
+        </div>
+        <div class="armor-wall" aria-label="Explore the armor archive"></div>
+        <div class="armory-bottom">
+          <span class="micro">( SELECT AN ARMOR TO OPEN ITS FILE )</span>
+          <h3>THE NEXT IDEA<br />IS ALWAYS <em>out there.</em></h3>
+          <button class="pill" id="explore-armor">
+            EXPLORE THE ARCHIVE <span>↗</span>
+          </button>
+        </div>
+      </section>
+      <section class="doom-chapter" id="doom" aria-labelledby="doom-title">
+        <div class="doom-photo">
+          <img
+            src="/images/doom.webp"
+            alt="Doctor Doom, silver mask beneath an emerald green cloak"
+            loading="lazy"
+          />
+        </div>
+        <div class="doom-copy">
+          <span class="micro">03 / THE OTHER SIDE OF GENIUS</span>
+          <h2 id="doom-title">
+            EVERY<br /><em>legacy</em><br />CASTS A<br /><em>shadow.</em>
+          </h2>
+          <p>
+            A different mind. An uncompromising vision.<br />Beyond the armor
+            lies a world that belongs to Doom.
+          </p>
+          <button class="pill doom-reveal">
+            MEET THE SHADOW <span>↗</span></button
+          ><span class="doom-coordinate micro"
+            >LATVERIA / THE FUTURE HAS ANOTHER FACE.</span
+          >
+        </div>
+      </section>
+      <section class="allies" aria-labelledby="allies-title">
+        <span class="micro">NO ONE BUILDS A LEGACY ALONE.</span>
+        <h2 id="allies-title">EXTRAORDINARY<br /><em>connections.</em></h2>
+        <div
+          class="allies-marquee"
+          tabindex="0"
+          role="img"
+          aria-label="Stark Industries, Avengers, J.A.R.V.I.S., S.H.I.E.L.D. and F.R.I.D.A.Y. Focus or hover to pause the moving text."
+        >
+          <div>
+            <span>STARK INDUSTRIES</span><span class="serif">Avengers</span
+            ><span>J.A.R.V.I.S.</span><span class="serif">S.H.I.E.L.D.</span
+            ><span>FRIDAY</span><span>STARK INDUSTRIES</span
+            ><span class="serif">Avengers</span><span>J.A.R.V.I.S.</span
+            ><span class="serif">S.H.I.E.L.D.</span><span>FRIDAY</span>
+          </div>
+        </div>
+      </section>
+      <section class="legacy" aria-labelledby="legacy-title">
+        <div class="legacy-fan">
+          <img
+            src="/images/iron-man-film.webp"
+            alt="Iron Man film artwork"
+            loading="lazy"
+          /><img
+            src="/images/workshop.webp"
+            alt="Tony working in his workshop"
+            loading="lazy"
+          /><img
+            src="/images/iron.webp"
+            alt="The red and gold Iron Man armor"
+            loading="lazy"
+          /><img
+            src="/images/hall-of-armor.webp"
+            alt="The Hall of Armor"
+            loading="lazy"
+          /><img
+            src="/images/latveria.webp"
+            alt="The world of Doctor Doom"
+            loading="lazy"
+          />
+        </div>
+        <h2 id="legacy-title">A universe of <em>possibilities.</em></h2>
+        <div class="legacy-links">
+          <a
+            href="https://www.marvel.com/characters/iron-man-tony-stark"
+            target="_blank"
+            rel="noopener noreferrer"
+            >IRON MAN ↗</a
+          ><a
+            href="https://www.marvel.com/characters/doctor-doom-victor-von-doom"
+            target="_blank"
+            rel="noopener noreferrer"
+            >DOCTOR DOOM ↗</a
+          ><a href="#armory">THE ARCHIVE ↑</a>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="footer-panel">
+        <div class="footer-tab">ts</div>
+        <div class="footer-signature">Stark.</div>
+        <h2>ALWAYS<br /><em>building</em><br />WHAT'S NEXT.</h2>
+        <img
+          class="footer-armor"
+          src="/images/armor-mark-vii.webp"
+          alt="Iron Man Mark VII armor"
+          loading="lazy"
+        /><a class="pill" href="#home">BACK TO THE BEGINNING <span>↑</span></a>
+        <div class="footer-bottom">
+          <span>AN INSANZIA LABS EXPERIMENT</span
+          ><button id="credits-open">CREDITS & INFORMATION ↗</button
+          ><span>FAN-MADE / UNOFFICIAL</span>
+        </div>
+      </div>
+      <div class="footer-wordmark" aria-hidden="true">
+        STARK<em>INDUSTRIES</em>
+      </div>
+    </footer>
+    <dialog class="armor-dialog" aria-labelledby="file-title">
+      <button class="dialog-close" aria-label="Close armor file">
+        CLOSE <span>×</span>
+      </button>
+      <div class="file-image"><img alt="" /></div>
+      <div class="file-copy">
+        <span class="micro file-number"></span>
+        <h2 id="file-title"></h2>
+        <span class="file-subtitle"></span>
+        <p class="file-description"></p>
+        <dl class="file-specs"></dl>
+        <div class="file-nav">
+          <button class="file-prev" aria-label="Previous armor">←</button
+          ><span>STARK INDUSTRIES / ARCHIVE</span
+          ><button class="file-next" aria-label="Next armor">→</button>
+        </div>
+      </div>
+    </dialog>
+    <dialog class="credits-dialog" aria-labelledby="credits-title">
+      <button class="credits-close" aria-label="Close credits">CLOSE ×</button
+      ><span class="micro">BEHIND THE EXPERIMENT</span>
+      <h2 id="credits-title">Built with <em>inspiration.</em></h2>
+      <p>
+        An unofficial fan-made creative development study by Insanzia Labs.
+        Inspired by the design and interaction direction of
+        <a
+          href="https://landonorris.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Lando Norris’s website</a
+        >, created by OFF+BRAND.
+      </p>
+      <p>
+        Tony Stark, Iron Man, Doctor Doom and related imagery belong to Marvel
+        and their respective rights holders. Hero portraits supplied for this
+        experiment. Additional film, armor and editorial imagery is credited in
+        the project source.
+      </p>
+      <p>
+        This is a fictional editorial experience, with no affiliation to Marvel,
+        Lando Norris or OFF+BRAND.
+      </p>
+    </dialog>
+    <noscript
+      ><div class="no-js">
+        JavaScript is needed for the interactive portraits. You can still
+        explore the story and images below.
+      </div>
+      <style>
+        .loader {
+          display: none;
+        }
+        .hero-portrait {
+          opacity: 1;
+        }
+        .hero-track {
+          height: 100svh;
+        }
+        .memory-track {
+          height: auto;
+        }
+        .memory-sticky {
+          position: relative;
+          height: auto;
+        }
+        .memory-strip {
+          width: auto;
+          display: flex;
+          flex-wrap: wrap;
+          padding: 5rem 1rem;
+        }
+        .memory {
+          position: relative !important;
+          inset: auto !important;
+          width: 45% !important;
+          transform: none !important;
+        }
+        .menu-toggle {
+          display: none;
+        }
+      </style></noscript
+    >
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
