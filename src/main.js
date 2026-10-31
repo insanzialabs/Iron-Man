@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { Portrait } from "./portrait.js";
+import { personas, createPersonaExperience } from "./personas.js";
 
 gsap.registerPlugin(ScrollTrigger);
 const $ = (selector) => document.querySelector(selector);
@@ -20,7 +21,10 @@ lenis.stop();
 
 const portrait = new Portrait($("#portrait"), { reduced });
 let persona = 0;
+let changeExperience;
 function selectPersona(index, announce = true) {
+  if (index < 0 || index >= personas.length) return;
+  const changed = persona !== index;
   persona = index;
   portrait.setPersona(index);
   $$("[data-persona]").forEach((button) =>
@@ -29,27 +33,45 @@ function selectPersona(index, announce = true) {
       String(Number(button.dataset.persona) === index),
     ),
   );
-  const hint = $(".hero-hint>span:last-child");
-  hint.innerHTML =
-    index === 0
-      ? "MOVE TO REVEAL.<br />CLICK TO LOCK THE ARMOR."
-      : `${index === 1 ? "IRON MAN" : "DOCTOR DOOM"} / IDENTITY LOCKED.<br />SELECT THE MAN TO RESET.`;
+  const profile = personas[index],
+    hint = $(".hero-hint>span:last-child");
+  hint.innerHTML = `MOVE TO REVEAL ${profile.next}.<br />PRESS TO EXPAND. BUTTONS CHANGE IDENTITY.`;
   if (announce) hint.setAttribute("role", "status");
   $(".hero-portrait").setAttribute(
     "aria-label",
-    index === 0
-      ? "Interactive portrait of Tony Stark. Move your pointer to reveal Iron Man."
-      : `Portrait of ${index === 1 ? "Iron Man" : "Doctor Doom"}.`,
+    `${profile.name}. Move to reveal ${profile.next}. Use the character buttons to change the experience.`,
   );
+  if (changed) changeExperience?.(index);
 }
 $$("[data-persona]").forEach((button) =>
   button.addEventListener("click", () =>
     selectPersona(Number(button.dataset.persona)),
   ),
 );
-$(".hero-portrait").addEventListener("click", () =>
-  selectPersona(persona === 1 ? 0 : 1),
+// Pointer presses enlarge the temporary liquid lens. They never change identity.
+
+const motionToggle = $(".hero-motion-toggle");
+motionToggle.setAttribute("aria-pressed", String(reduced));
+motionToggle.setAttribute(
+  "aria-label",
+  reduced
+    ? "Automatic hero animation disabled by reduced-motion preference"
+    : "Pause automatic hero animation",
 );
+motionToggle.querySelector("span").textContent = reduced ? "OFF" : "ON";
+motionToggle.disabled = reduced;
+motionToggle.addEventListener("click", () => {
+  const enabled = !portrait.idleEnabled;
+  portrait.setIdleEnabled(enabled);
+  motionToggle.setAttribute("aria-pressed", String(!enabled));
+  motionToggle.setAttribute(
+    "aria-label",
+    enabled
+      ? "Pause automatic hero animation"
+      : "Resume automatic hero animation",
+  );
+  motionToggle.querySelector("span").textContent = enabled ? "ON" : "OFF";
+});
 
 // The menu is one continuous full-screen transition. Inert keeps hidden links out of the tab order.
 let menuOpen = false;
@@ -57,6 +79,7 @@ let menuTween;
 function toggleMenu(open) {
   if (menuOpen === open) return;
   menuOpen = open;
+  portrait.setSuspended("menu", open);
   menuTween?.kill();
   $(".menu-toggle").setAttribute("aria-expanded", String(open));
   $(".menu-toggle").setAttribute(
@@ -98,9 +121,9 @@ function toggleMenu(open) {
       {
         y: 0,
         opacity: 1,
-        stagger: 0.055,
-        delay: 0.2,
-        duration: 0.7,
+        stagger: reduced ? 0 : 0.055,
+        delay: reduced ? 0 : 0.2,
+        duration: reduced ? 0 : 0.7,
         ease: "power3.out",
       },
     );
@@ -111,7 +134,7 @@ document.addEventListener("keydown", (event) => {
     if (menuOpen) {
       toggleMenu(false);
       $(".menu-toggle").focus();
-    } else if (!document.querySelector("dialog[open]")) selectPersona(0);
+    }
   }
   if (event.key === "Tab" && menuOpen) {
     const targets = [$(".menu-toggle"), ...$$(".menu a")],
@@ -204,14 +227,39 @@ const armors = [
     description:
       "A lifetime of lessons, distilled into one suit. Adaptive nanotechnology meets the unmistakable red and gold — the culmination of an engineer who never stopped improving.",
   },
+  {
+    mark: "MARK III",
+    name: "The signature.",
+    year: "2008",
+    image: "armor-mark-iii.webp",
+    type: "GOLD-TITANIUM / COMBAT ARMOR",
+    power: "Arc reactor",
+    system: "J.A.R.V.I.S.",
+    film: "Iron Man",
+    description:
+      "The first red-and-gold combat suit. Built after Tony’s flight tests, the Mark III made the armor’s identity unmistakable: a brilliant idea, given a form the world would recognize.",
+  },
+  {
+    mark: "MARK L",
+    name: "An idea, reassembled.",
+    year: "2018",
+    image: "armor-mark-l.webp",
+    type: "NANOTECH / ADAPTIVE ARMOR",
+    power: "Advanced arc reactor",
+    system: "F.R.I.D.A.Y.",
+    film: "Avengers: Infinity War",
+    description:
+      "The armor becomes adaptive. The Mark L brings nanotechnology to Tony’s designs, allowing equipment to form and change around its pilot in the middle of the fight.",
+  },
 ];
+let currentEntries = armors;
 const wall = $(".armor-wall");
 const order = [
-  [0, 2, 1],
-  [2, 1, 3],
+  [0, 4, 1],
+  [2, 1, 5],
   [3, 0, 2],
-  [1, 3, 0],
-  [2, 0, 3],
+  [4, 5, 0],
+  [2, 1, 3],
 ];
 order.forEach((items, column) => {
   const el = document.createElement("div");
@@ -232,6 +280,7 @@ order.forEach((items, column) => {
     const armor = armors[index],
       button = document.createElement("button");
     button.className = "armor-card";
+    button.dataset.file = String(index);
     button.setAttribute("aria-label", `Explore ${armor.mark}, ${armor.year}`);
     button.innerHTML = `<svg class="armor-frame" aria-hidden="true" viewBox="0 0 187 188" preserveAspectRatio="none"><path d="M8 .5h170.12a7.5 7.5 0 0 1 7.5 7.5v154.61a7.5 7.5 0 0 1-7.5 7.5H60.681a10.5 10.5 0 0 0-8.21 3.954l-7.86 9.858a9.5 9.5 0 0 1-7.427 3.578H8A7.5 7.5 0 0 1 .5 180V8A7.5 7.5 0 0 1 8 .5Z"/></svg><span class="plus" aria-hidden="true">＋</span><img src="/images/${armor.image}" alt="" loading="lazy"><span class="armor-caption"><span>${armor.mark}</span><span>${armor.year}</span></span>`;
     button.addEventListener("click", () => openArmor(index));
@@ -243,22 +292,23 @@ const dialog = $(".armor-dialog");
 let currentArmor = 0;
 let returnFocus;
 function renderArmor(index) {
-  currentArmor = (index + armors.length) % armors.length;
-  const armor = armors[currentArmor];
+  currentArmor = (index + currentEntries.length) % currentEntries.length;
+  const armor = currentEntries[currentArmor];
   $(".file-image img").src = `/images/${armor.image}`;
-  $(".file-image img").alt = `Iron Man ${armor.mark} armor`;
+  $(".file-image img").alt = `${personas[persona].name}: ${armor.mark}`;
   $(".file-number").textContent =
     `FILE 00${currentArmor + 1} / ${armor.year} / ${armor.type}`;
   $("#file-title").textContent = armor.mark;
   $(".file-subtitle").textContent = armor.name;
   $(".file-description").textContent = armor.description;
   $(".file-specs").innerHTML =
-    `<dt>POWER SOURCE</dt><dd>${armor.power}</dd><dt>ONBOARD SYSTEM</dt><dd>${armor.system}</dd><dt>FIRST APPEARANCE</dt><dd>${armor.film}</dd>`;
+    `<dt>${persona === 1 ? "POWER SOURCE" : "FOCUS"}</dt><dd>${armor.power}</dd><dt>${persona === 1 ? "ONBOARD SYSTEM" : "CONNECTION"}</dt><dd>${armor.system}</dd><dt>STORY</dt><dd>${armor.film}</dd>`;
 }
 function openArmor(index) {
   renderArmor(index);
   returnFocus = document.activeElement;
   dialog.showModal();
+  portrait.setSuspended("dialog", true);
   lenis.stop();
   document.body.classList.add("overlay-open");
   if (!reduced)
@@ -283,6 +333,7 @@ const credits = $(".credits-dialog");
 $("#credits-open").addEventListener("click", () => {
   returnFocus = document.activeElement;
   credits.showModal();
+  portrait.setSuspended("dialog", true);
   lenis.stop();
   document.body.classList.add("overlay-open");
 });
@@ -301,15 +352,46 @@ $$("dialog").forEach((modal) => {
       closeDialog(modal);
   });
   modal.addEventListener("close", () => {
+    portrait.setSuspended("dialog", false);
     document.body.classList.remove("overlay-open");
     lenis.start();
     returnFocus?.focus({ preventScroll: true });
   });
 });
 $(".doom-reveal").addEventListener("click", () => {
-  selectPersona(2);
+  selectPersona(Number($(".doom-reveal").dataset.target ?? 2));
   lenis.scrollTo("#home", { duration: reduced ? 0 : 1.8 });
 });
+
+changeExperience = createPersonaExperience({
+  gsap,
+  reduced,
+  refresh: () => ScrollTrigger.refresh(),
+  onArchiveChange: (entries, index) => {
+    currentEntries = entries || armors;
+    $$(".armor-card[data-file]").forEach((button) => {
+      const file =
+        currentEntries[Number(button.dataset.file) % currentEntries.length];
+      button.querySelector("img").src = `/images/${file.image}`;
+      button.querySelector(".armor-caption>span:first-child").textContent =
+        file.mark;
+      button.querySelector(".armor-caption>span:last-child").textContent =
+        file.year;
+      button.setAttribute("aria-label", `Explore ${file.mark}`);
+      button.classList.toggle("is-dossier", index !== 1);
+    });
+    $(".armor-wall").setAttribute(
+      "aria-label",
+      index === 1
+        ? "Explore the armor archive"
+        : index === 2
+          ? "Explore the Latverian dossiers"
+          : "Explore Tony Stark’s workshop",
+    );
+  },
+});
+changeExperience(0, { immediate: true });
+selectPersona(0, false);
 
 function motion() {
   // Match the reference's full-screen portrait -> small portrait -> manifesto choreography.
@@ -329,7 +411,7 @@ function motion() {
         0,
       )
       .to(
-        ".persona-panel,.hero-hint,.hero-scroll",
+        ".persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle",
         { opacity: 0, y: 15, duration: 0.2, ease: "none" },
         0,
       )
@@ -490,10 +572,15 @@ function motion() {
     start: "top top",
     end: "bottom top",
     onUpdate: (self) => {
-      $$(".persona-panel,.hero-hint,.hero-scroll").forEach((el) => {
-        el.inert = self.progress > 0.12;
-        el.style.pointerEvents = self.progress > 0.12 ? "none" : "";
-      });
+      const scrollSuspended = self.progress > 0.12;
+      if (portrait.suspensions.has("scroll") !== scrollSuspended)
+        portrait.setSuspended("scroll", scrollSuspended);
+      $$(".persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle").forEach(
+        (el) => {
+          el.inert = self.progress > 0.12;
+          el.style.pointerEvents = self.progress > 0.12 ? "none" : "";
+        },
+      );
     },
   });
   ScrollTrigger.refresh();
@@ -511,6 +598,16 @@ async function start() {
       )),
   });
   await Promise.allSettled([portrait.ready, document.fonts.ready]);
+  if (!portrait.gl) {
+    portrait.setIdleEnabled(false);
+    motionToggle.disabled = true;
+    motionToggle.setAttribute("aria-pressed", "true");
+    motionToggle.setAttribute(
+      "aria-label",
+      "Automatic motion unavailable without WebGL",
+    );
+    motionToggle.querySelector("span").textContent = "OFF";
+  }
   motion();
   gsap.killTweensOf(count);
   $(".load-count").textContent = "100";
@@ -518,6 +615,7 @@ async function start() {
     onComplete: () => {
       document.body.classList.remove("is-loading");
       $(".loader").remove();
+      portrait.setSuspended("loading", false);
       lenis.start();
       ScrollTrigger.refresh();
     },
@@ -544,7 +642,7 @@ async function start() {
       reduced ? 0 : "<.15",
     )
     .from(
-      ".header,.persona-panel,.hero-hint,.hero-scroll",
+      ".header,.persona-panel,.hero-hint,.hero-scroll,.hero-motion-toggle",
       {
         opacity: 0,
         y: 12,

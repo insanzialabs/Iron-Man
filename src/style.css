@@ -2092,3 +2092,137 @@ dialog::backdrop {
   outline: 1px solid var(--ink);
   outline-offset: 10px;
 }
+/* Identity palettes share the reference's color hierarchy and geometry. */
+:root {
+  --paper: #bfc3b5;
+  --chapter: #d6d9ce;
+  --archive: #10110f;
+}
+.memory-track,
+.memory-sticky {
+  background-color: var(--paper);
+}
+.armory {
+  background: var(--archive);
+}
+.duality-card > img {
+  mix-blend-mode: multiply;
+}
+.doom-chapter {
+  background: var(--chapter);
+}
+.doom-copy {
+  background: linear-gradient(90deg, transparent, var(--chapter) 25%);
+}
+.file-image {
+  background: var(--paper);
+}
+.armor-card.is-dossier {
+  padding: 18px 16px 38px;
+}
+.armor-card.is-dossier img {
+  object-fit: cover;
+  height: 85%;
+  width: 100%;
+  border-radius: 2px;
+  filter: none;
+}
+.armor-card.is-dossier:hover img {
+  transform: scale(1.04);
+}
+body[data-persona="2"] .footer-armor {
+  width: 340px;
+  object-fit: cover;
+  object-position: 50% 15%;
+  margin: 30px auto 20px;
+  border-radius: 160px 160px 8px 8px;
+  mix-blend-mode: luminosity;
+}
+body[data-persona="2"] #allies-title {
+  font-size: clamp(40px, 6.5vw, 100px);
+}
+.hero-portrait {
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+.hero-portrait:active {
+  cursor: grabbing;
+}
+@media (max-width: 600px) {
+  .doom-copy {
+    background: var(--chapter);
+  }
+  .hero-hint {
+    max-width: 145px;
+    font-size: 6px;
+    line-height: 1.5;
+  }
+  body[data-persona="2"] #allies-title {
+    font-size: 9vw;
+  }
+}
+body[data-persona="0"] .file-copy h2,
+body[data-persona="2"] .file-copy h2 {
+  font-size: clamp(38px, 5vw, 72px);
+  overflow-wrap: anywhere;
+}
+body[data-persona="1"] .footer-wordmark {
+  font-size: 33vw;
+}
+body[data-persona="1"] .footer-wordmark em {
+  font-size: 40vw;
+  line-height: 0.9;
+}
+body[data-persona="2"] .footer-wordmark {
+  font-size: 21vw;
+}
+body[data-persona="2"] .footer-wordmark em {
+  font-size: 30vw;
+  line-height: 1;
+}
+.hero-motion-toggle {
+  position: absolute;
+  right: var(--gap);
+  bottom: calc(var(--gap) + 42px);
+  z-index: 3;
+  font-size: 7px;
+  letter-spacing: 0.025em;
+  font-weight: 750;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 0;
+  color: var(--ink);
+}
+.hero-motion-toggle > span {
+  border: 1px solid currentColor;
+  border-radius: 10px;
+  padding: 3px 7px;
+  font-size: 6px;
+  min-width: 29px;
+  text-align: center;
+}
+.hero-motion-toggle[aria-pressed="false"] > span {
+  background: var(--lime);
+  border-color: transparent;
+}
+.hero-motion-toggle:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+body[data-persona="2"] .memory.m3 {
+  background: transparent;
+}
+body[data-persona="2"] .memory.m3 img {
+  padding: 0;
+  object-fit: cover;
+}
+@media (max-width: 600px) {
+  .hero-motion-toggle {
+    bottom: 80px;
+    font-size: 6px;
+  }
+}
+/* The reference uses a near-white procedural ground, with barely perceptible grain. */
+.hero-portrait{background:#fbfbf9}
+.hero-grain{opacity:.045}
